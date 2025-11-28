@@ -29,8 +29,6 @@ try {
       'message' => 'Bebida preparada com sucesso',
       'beverage' => [
         'id' => $beverage['id'],
-        'name' => $beverage['name'],
-        'type' => $beverage['type'],
         'brew_time_seconds' => $beverage['brew_time_seconds']
       ]
     ];

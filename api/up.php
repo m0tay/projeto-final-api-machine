@@ -10,8 +10,7 @@ try {
 
   $code = 200;
   $response = [
-    'status' => 'healthy',
-    'message' => 'Sistema operacional',
+    'status' => 'Up and alive!',
     'timestamp' => date('c'),
     'beverages_count' => $result['count']
   ];
