@@ -1,5 +1,6 @@
 <?php
-function connectDB($db) {
+function connectDB($db)
+{
   try {
     $pdo = new PDO('sqlite:' . $db['path']);
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
@@ -11,7 +12,8 @@ function connectDB($db) {
   }
 }
 
-function debug($info = '', $type = 'log') {
+function debug($info = '', $type = 'log')
+{
   if (defined('DEBUG') && DEBUG) {
     echo "<script>console.$type(" . json_encode($info, JSON_PRETTY_PRINT) . ");</script>";
     return true;
@@ -19,7 +21,8 @@ function debug($info = '', $type = 'log') {
   return false;
 }
 
-function debug_array($info = '') {
+function debug_array($info = '')
+{
   if (defined('DEBUG') && DEBUG) {
     global $_DEBUG;
     $_DEBUG = $info;
@@ -28,14 +31,16 @@ function debug_array($info = '') {
   return false;
 }
 
-function get_path_module() {
+function get_path_module()
+{
   $pathinfo = filter_input(INPUT_SERVER, 'PATH_INFO');
   if (empty($pathinfo)) return false;
   $patharray = explode("/", $pathinfo);
   return in_array($patharray[1], API_MODULES) ? $patharray[1] : false;
 }
 
-function get_path_id() {
+function get_path_id()
+{
   $pathinfo = filter_input(INPUT_SERVER, 'PATH_INFO');
   if (empty($pathinfo)) return null;
   $patharray = explode("/", $pathinfo);
@@ -45,7 +50,7 @@ function get_path_id() {
   return null;
 }
 
-function is_admin() {
+function is_admin()
+{
   return isset($_SESSION['email']) && $_SESSION['profile'] == 'admin';
 }
-
