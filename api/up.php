@@ -12,7 +12,8 @@ try {
   $response = [
     'status' => 'Up and alive!',
     'timestamp' => date('c'),
-    'beverages_count' => $result['count']
+    'beverages_count' => $result['count'],
+    'machine_id' => $_ENV['MACHINE_ID']
   ];
 } catch (Exception $e) {
   $code = 503;
