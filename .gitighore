@@ -1,0 +1,6 @@
+.env
+vendor/
+tests/
+Makefile
+.DS_Store
+
