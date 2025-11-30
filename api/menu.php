@@ -5,8 +5,8 @@ require_once '../core.php';
 $pdo = connectDB($db);
 
 try {
-  $stmt = $pdo->query("SELECT * FROM beverages WHERE is_available = 1");
-  $beverages = $stmt->fetchAll();
+  $stmt = $pdo->query("SELECT * FROM beverages");
+  $beverages = $stmt->fetchAll(PDO::FETCH_ASSOC);
   
   if ($beverages) {
     $code = 200;
