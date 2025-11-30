@@ -1,42 +1,41 @@
 <?php
 require_once '../config.php';
 require_once '../core.php';
+require_once '../objects/Beverage.php';
 
-$pdo = connectDB($db);
+$beverage = new Beverage($db);
 $data = json_decode(file_get_contents('php://input'));
 
 if (!isset($data->beverage_id)) {
   $code = 400;
   $response = ['message' => 'beverage_id é obrigatório'];
-  header('Content-Type: application/json; charset=UTF-8');
-  http_response_code($code);
-  echo json_encode($response);
-  die();
 }
 
 try {
-  $stmt = $pdo->prepare("SELECT * FROM beverages WHERE id = :beverage_id AND is_available = 1");
-  $stmt->bindValue(':beverage_id', $data->beverage_id);
-  $stmt->execute();
-  $beverage = $stmt->fetch();
+  $beverage->id = $data->beverage_id;
+  $beverage->read();
   
-  if (!$beverage) {
+  if (!$beverage->id) {
     $code = 404;
     $response = ['message' => 'Bebida não encontrada'];
+  } else if ($beverage->is_active == false) {
+    $code = 422;
+    $response = ['message' => 'Bebida indisponível'];
   } else {
+    $beverage->make();
     $code = 200;
     $response = [
       'message' => 'Bebida preparada com sucesso',
       'beverage' => [
-        'id' => $beverage['id'],
-        'brew_time_seconds' => $beverage['brew_time_seconds']
+        'id' => $beverage->id,
+        'name' => $beverage->name,
       ]
     ];
   }
   
 } catch (Exception $e) {
-  $code = 500;
-  $response = ['message' => 'Erro ao preparar bebida: ' . $e->getMessage()];
+  $code = 422;
+  $response = ['message' => 'Não foi possível preparar a bebida'];
 }
 
 header('Content-Type: application/json; charset=UTF-8');
