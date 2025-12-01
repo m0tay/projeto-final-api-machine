@@ -3,7 +3,8 @@ require_once '../config.php';
 require_once '../core.php';
 require_once '../objects/Beverage.php';
 
-$beverage = new Beverage($db);
+$pdo = connectDB($db);
+$beverage = new Beverage($pdo);
 $data = json_decode(file_get_contents('php://input'));
 
 if (!isset($data->beverage_id)) {
@@ -14,7 +15,7 @@ if (!isset($data->beverage_id)) {
 try {
   $beverage->id = $data->beverage_id;
   $beverage->read();
-  
+
   if (!$beverage->id) {
     $code = 404;
     $response = ['message' => 'Bebida não encontrada'];
@@ -24,15 +25,8 @@ try {
   } else {
     $beverage->make();
     $code = 200;
-    $response = [
-      'message' => 'Bebida preparada com sucesso',
-      'beverage' => [
-        'id' => $beverage->id,
-        'name' => $beverage->name,
-      ]
-    ];
+    $response = ['message' => 'Bebida preparada com sucesso'];
   }
-  
 } catch (Exception $e) {
   $code = 422;
   $response = ['message' => 'Não foi possível preparar a bebida'];
