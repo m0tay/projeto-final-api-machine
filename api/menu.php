@@ -5,7 +5,7 @@ require_once '../core.php';
 $pdo = connectDB($db);
 
 try {
-  $stmt = $pdo->query("SELECT * FROM beverages");
+  $stmt = $pdo->query("SELECT * FROM beverages WHERE is_active = 1 ORDER BY name ASC");
   $beverages = $stmt->fetchAll(PDO::FETCH_ASSOC);
   
   if ($beverages) {
@@ -23,4 +23,4 @@ try {
 header('Content-Type: application/json; charset=UTF-8');
 http_response_code($code);
 echo json_encode($response);
-die(); // https://stackoverflow.com/questions/4064444/returnin-json-from-a-php-script#comment88774427_4064468
+die();
