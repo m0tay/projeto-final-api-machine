@@ -57,6 +57,7 @@ class Beverage implements BREAD
 
     return $beverages;
   }
+
   public function read()
   {
     $query = "SELECT * FROM " . $this->table_name . " WHERE id = :id";
@@ -68,6 +69,11 @@ class Beverage implements BREAD
     $stmt->execute();
 
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if (!$row) {
+      $this->id = null; 
+      return false;
+    }
 
     $this->name = $row['name'];
     $this->type = $row['type'];
@@ -78,7 +84,10 @@ class Beverage implements BREAD
     $this->price = $row['price'];
     $this->is_active = $row['is_active'];
     $this->get_ingredients();
+    
+    return true;
   }
+
   public function add()
   {
     $query = 'INSERT INTO ' . $this->table_name . '
