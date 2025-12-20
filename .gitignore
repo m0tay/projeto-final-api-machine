@@ -3,4 +3,5 @@ vendor/
 tests/
 Makefile
 .DS_Store
+.phpconfig
 
