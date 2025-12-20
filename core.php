@@ -1,16 +1,39 @@
 <?php
+/* function connectDB($db) */
+/* { */
+/*   try { */
+/*     $pdo = new PDO('sqlite:' . $db['path']); */
+/*     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC); */
+/*     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); */
+/*     $pdo->exec('PRAGMA foreign_keys = ON;'); */
+/*     return $pdo; */
+/*   } catch (PDOException $e) { */
+/*     die('Database error: ' . $e->getMessage()); */
+/*   } */
+/* } */
+/**/
 function connectDB($db)
 {
   try {
-    $pdo = new PDO('sqlite:' . $db['path']);
-    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $pdo->exec('PRAGMA foreign_keys = ON;');
-    return $pdo;
+    $pdo = new PDO(
+      'mysql:host=' . $db['host'] . '; ' . // string de ligação
+        'port=' . $db['port'] . ';' . // string de ligação
+        'charset=' . $db['charset'] . ';' . // string de ligação
+        'dbname=' . $db['dbname'] . ';', // string de ligação
+      $db['username'], // username
+      $db['password']                         // password
+    );
   } catch (PDOException $e) {
-    die('Database error: ' . $e->getMessage());
+    die('Erro ao ligar ao servidor ' . $e->getMessage());
   }
+  // Definir array associativo como default para fetch()
+  $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+
+  // Definir lançamento de exceção para erros PDO
+  $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  return $pdo;
 }
+
 
 function debug($info = '', $type = 'log')
 {

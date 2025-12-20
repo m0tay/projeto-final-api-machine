@@ -3,7 +3,15 @@ require_once 'vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
-$db = ['path' => __DIR__ . '/' . $_ENV['DB_FILENAME']];
+$db = [
+  'host' => $_ENV['DB_HOST'],
+  'port' => $_ENV['DB_PORT'],
+  'charset' => $_ENV['DB_CHARSET'],
+  'dbname' => $_ENV['DB_NAME'],
+  'username' => $_ENV['DB_USERNAME_DBO'],
+  'password' => $_ENV['DB_PASSWORD_DBO']
+];
+
 
 define('API_MODULES', explode(',', $_ENV['API_MODULES']));
 
